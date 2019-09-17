@@ -1,9 +1,14 @@
 package com.ewyboy.worldstripper.network;
 
+import com.ewyboy.worldstripper.config.Config;
+import com.ewyboy.worldstripper.config.ConfigHandler;
+import com.ewyboy.worldstripper.other.Profile;
 import com.ewyboy.worldstripper.other.Reference;
 import com.ewyboy.worldstripper.WorldStripper;
 import com.raphydaphy.crochet.network.IPacket;
 import com.raphydaphy.crochet.network.MessageHandler;
+import io.github.prospector.modmenu.config.ModMenuConfigManager;
+import me.sargunvohra.mcmods.autoconfig1.ConfigManager;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,7 +19,10 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+
+import java.util.Arrays;
 
 public class PacketStripWorld implements IPacket {
 
@@ -42,11 +50,14 @@ public class PacketStripWorld implements IPacket {
 
         @Override
         public void handle(PacketContext ctx, PacketStripWorld packetStripWorld) {
+            Config config = ConfigHandler.getConfig();
+
             ServerPlayerEntity player = (ServerPlayerEntity) ctx.getPlayer();
             World world = player != null ? player.getEntityWorld() : null;
 
-            double chunkClearSizeX = (24);
-            double chunkClearSizeZ = (24);
+            int profile = config.getSelectedProfile();
+            double chunkClearSizeX = (16 * config.getChunkRadiusX() / 2);
+            double chunkClearSizeZ = (16 * config.getChunkRadiusZ() / 2);
 
             if (player != null) {
                 if (player.isCreative()) {
@@ -59,8 +70,10 @@ public class PacketStripWorld implements IPacket {
                                 Block targetBlock = targetBlockState.getBlock();
 
                                 if (!targetBlock.equals(Blocks.AIR) && !targetBlock.equals(Blocks.BEDROCK)) {
-                                    WorldStripper.hashedBlockCache.put(targetBlockPos, targetBlockState);
-                                    world.setBlockState(targetBlockPos, Blocks.AIR.getDefaultState(), 3);
+                                    Arrays.stream(config.getStripProfile1().toArray()).filter(Registry.BLOCK.getId(targetBlock).toString() :: equals).forEachOrdered(s -> {
+                                        WorldStripper.hashedBlockCache.put(targetBlockPos, targetBlockState);
+                                        world.setBlockState(targetBlockPos, Registry.BLOCK.get(new Identifier(config.getReplacementBlock())).getDefaultState(), config.getBlockStateFlag());
+                                    });
                                 }
                             }
                         }

@@ -1,9 +1,9 @@
 package com.ewyboy.worldstripper.client.keybindings;
 
-import com.ewyboy.worldstripper.other.Reference;
 import com.ewyboy.worldstripper.WorldStripper;
 import com.ewyboy.worldstripper.network.PacketDressWorld;
 import com.ewyboy.worldstripper.network.PacketStripWorld;
+import com.ewyboy.worldstripper.other.Reference;
 import com.raphydaphy.crochet.network.PacketHandler;
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;

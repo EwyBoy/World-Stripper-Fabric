@@ -1,5 +1,6 @@
 package com.ewyboy.worldstripper;
 
+import com.ewyboy.worldstripper.config.ConfigHandler;
 import com.ewyboy.worldstripper.network.PacketDressWorld;
 import com.ewyboy.worldstripper.network.PacketStripWorld;
 import net.fabricmc.api.ModInitializer;
@@ -23,6 +24,7 @@ public class WorldStripper implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ConfigHandler.init();
 		ServerSidePacketRegistry.INSTANCE.register(PacketStripWorld.ID, new PacketStripWorld.Handler());
 		ServerSidePacketRegistry.INSTANCE.register(PacketDressWorld.ID, new PacketDressWorld.Handler());
 	}

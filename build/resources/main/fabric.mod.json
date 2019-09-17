@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "world-stripper",
+  "version": "1.0.0",
+
+  "name": "World Stripper",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "EwyBoy"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "MIT",
+  "icon": "assets/worldstripper/slightly_offending_image.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ewyboy.worldstripper.WorldStripper"
+    ],
+    "client": [
+      "com.ewyboy.worldstripper.client.WorldStripperClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*",
+    "crochet": "*"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}

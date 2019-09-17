@@ -14,6 +14,11 @@ public class ConfigModMenu implements ModMenuApi {
         return Reference.ModInfo.MOD_ID;
     }
 
+    /*@Override
+    public Optional<Supplier<Screen>> getConfigScreen(Screen screen) {
+        return Optional.of(AutoConfig.getConfigScreen(Config.class, screen));
+    }*/
+
     @Override
     public Function<Screen, ? extends Screen> getConfigScreenFactory() {
         return Config :: createConfigGui;

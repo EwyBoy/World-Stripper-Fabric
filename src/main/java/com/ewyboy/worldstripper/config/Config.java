@@ -3,7 +3,9 @@ package com.ewyboy.worldstripper.config;
 import com.ewyboy.worldstripper.other.Reference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import me.sargunvohra.mcmods.autoconfig1.ConfigData;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
@@ -16,7 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class Config {
+public class Config implements ConfigData {
 
     private int blockStateFlag = 3;
     private int chunkRadiusX = 3;
@@ -72,18 +74,20 @@ public class Config {
     static Screen createConfigGui(Screen screen) {
         ConfigBuilder builder = ConfigBuilder.create().setParentScreen(screen).setTitle(String.format("config.%s.title", Reference.ModInfo.MOD_ID));
         Config config = ConfigHandler.getConfig();
-        builder.getOrCreateCategory("general")
-                .addEntry(ConfigEntryBuilder.create().startTextDescription("Placeholder Text").build())
-                .addEntry(ConfigEntryBuilder.create().startIntField("block_state_flag", config.getBlockStateFlag()).setDefaultValue(3).setMin(0).setMax(16).setSaveConsumer(i -> config.blockStateFlag = i).build())
-                .addEntry(ConfigEntryBuilder.create().startIntField("chunk_radius_x", config.getChunkRadiusX()).setDefaultValue(3).setMin(0).setMax(256).setSaveConsumer(i -> config.chunkRadiusX = i).build())
-                .addEntry(ConfigEntryBuilder.create().startIntField("chunk_radius_z", config.getChunkRadiusZ()).setDefaultValue(3).setMin(0).setMax(256).setSaveConsumer(i -> config.chunkRadiusZ = i).build())
-                .addEntry(ConfigEntryBuilder.create().startStrField("replacement_block", config.replacementBlock).setDefaultValue("minecraft:air").setSaveConsumer(str -> config.replacementBlock = str).build())
-                .addEntry(ConfigEntryBuilder.create().startIntField("selected_profile", config.getSelectedProfile()).setDefaultValue(1).setMin(1).setMax(5).setSaveConsumer(i -> config.selectedProfile = i).build())
-                .addEntry(ConfigEntryBuilder.create().startStrList("profile_1", Lists.newArrayList(config.stripProfile1)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build())
-                .addEntry(ConfigEntryBuilder.create().startStrList("profile_2", Lists.newArrayList(config.stripProfile2)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build())
-                .addEntry(ConfigEntryBuilder.create().startStrList("profile_3", Lists.newArrayList(config.stripProfile3)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build())
-                .addEntry(ConfigEntryBuilder.create().startStrList("profile_4", Lists.newArrayList(config.stripProfile4)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build())
-                .addEntry(ConfigEntryBuilder.create().startStrList("profile_5", Lists.newArrayList(config.stripProfile5)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build());
+        builder.setDefaultBackgroundTexture(new Identifier("minecraft:textures/block/dirt.png"));
+        ConfigCategory general = builder.getOrCreateCategory("general");
+        ConfigEntryBuilder entryBuilder = ConfigEntryBuilder.create();
+                general.addEntry(entryBuilder.startTextDescription("Placeholder Text").build());
+                general.addEntry(entryBuilder.startIntField("block_state_flag", config.getBlockStateFlag()).setDefaultValue(3).setMin(0).setMax(16).setSaveConsumer(i -> config.blockStateFlag = i).build());
+                general.addEntry(entryBuilder.startIntField("chunk_radius_x", config.getChunkRadiusX()).setDefaultValue(3).setMin(0).setMax(256).setSaveConsumer(i -> config.chunkRadiusX = i).build());
+                general.addEntry(entryBuilder.startIntField("chunk_radius_z", config.getChunkRadiusZ()).setDefaultValue(3).setMin(0).setMax(256).setSaveConsumer(i -> config.chunkRadiusZ = i).build());
+                general.addEntry(entryBuilder.startStrField("replacement_block", config.replacementBlock).setDefaultValue("minecraft:air").setSaveConsumer(str -> config.replacementBlock = str).build());
+                general.addEntry(entryBuilder.startIntField("selected_profile", config.getSelectedProfile()).setDefaultValue(1).setMin(1).setMax(5).setSaveConsumer(i -> config.selectedProfile = i).build());
+                general.addEntry(entryBuilder.startStrList("profile_1", Lists.newArrayList(config.stripProfile1)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build());
+                general.addEntry(entryBuilder.startStrList("profile_2", Lists.newArrayList(config.stripProfile2)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build());
+                general.addEntry(entryBuilder.startStrList("profile_3", Lists.newArrayList(config.stripProfile3)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build());
+                general.addEntry(entryBuilder.startStrList("profile_4", Lists.newArrayList(config.stripProfile4)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build());
+                general.addEntry(entryBuilder.startStrList("profile_5", Lists.newArrayList(config.stripProfile5)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build());
         builder.setSavingRunnable(ConfigHandler :: save);
         return builder.build();
     }

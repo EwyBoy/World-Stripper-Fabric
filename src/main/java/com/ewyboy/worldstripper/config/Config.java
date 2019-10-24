@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("FieldCanBeLocal")
+@me.sargunvohra.mcmods.autoconfig1.annotation.Config(name = Reference.ModInfo.MOD_NAME)
 public class Config implements ConfigData {
 
     private int blockStateFlag = 3;
@@ -71,9 +71,9 @@ public class Config implements ConfigData {
     }
 
 
-    static Screen createConfigGui(Screen screen) {
-        ConfigBuilder builder = ConfigBuilder.create().setParentScreen(screen).setTitle(String.format("config.%s.title", Reference.ModInfo.MOD_ID));
+    static Screen createConfigGui(Screen parent) {
         Config config = ConfigHandler.getConfig();
+        ConfigBuilder builder = ConfigBuilder.create().setParentScreen(parent).setTitle(String.format("config.%s.title", Reference.ModInfo.MOD_ID));
         builder.setDefaultBackgroundTexture(new Identifier("minecraft:textures/block/dirt.png"));
         ConfigCategory general = builder.getOrCreateCategory("general");
         ConfigEntryBuilder entryBuilder = ConfigEntryBuilder.create();

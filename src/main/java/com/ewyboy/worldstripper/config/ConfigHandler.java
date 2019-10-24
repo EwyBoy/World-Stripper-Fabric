@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 
 public class ConfigHandler {
 
-    private static final Executor EXECUTOR = Executors.newSingleThreadExecutor(r -> new Thread(r, "World-Stripper Config Handler"));
+    private static final Executor IO_HANDLER = Executors.newSingleThreadExecutor(r -> new Thread(r, "World-Stripper Config IO Handler"));
     private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
     private static Config config;
     private static Path configFile;
@@ -52,7 +52,7 @@ public class ConfigHandler {
                 save();
                 return new Config();
             }
-        }, EXECUTOR);
+        }, IO_HANDLER);
     }
 
     public static CompletableFuture<Void> save() {
@@ -64,6 +64,6 @@ public class ConfigHandler {
             catch (IOException | JsonIOException e) {
                 WorldStripper.getLogger().error("unable to write config file", e);
             }
-        }, EXECUTOR);
+        }, IO_HANDLER);
     }
 }

@@ -7,8 +7,6 @@ import com.ewyboy.worldstripper.other.Reference;
 import com.ewyboy.worldstripper.WorldStripper;
 import com.raphydaphy.crochet.network.IPacket;
 import com.raphydaphy.crochet.network.MessageHandler;
-import io.github.prospector.modmenu.config.ModMenuConfigManager;
-import me.sargunvohra.mcmods.autoconfig1.ConfigManager;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -63,14 +61,14 @@ public class PacketStripWorld implements IPacket {
                 if (player.isCreative()) {
                     player.sendMessage(new LiteralText(Formatting.BOLD + "" + Formatting.RED + "WARNING! " + Formatting.WHITE + "World Stripping Initialized! Lag May Occur.."));
                     for (int x = (int) (player.getPos().getX() - chunkClearSizeX); (double) x <= player.getPos().getX() + chunkClearSizeX; x++) {
-                        for (int y = 0; (double) y <= player.getPos().getY() + 16; ++y) {
+                        for (int y = (int) player.getPos().getY() + 16; (double) y >= 0; --y) {
                             for (int z = (int) (player.getPos().getZ() - chunkClearSizeZ); (double) z <= player.getPos().getZ() + chunkClearSizeZ; z++) {
                                 BlockPos targetBlockPos = new BlockPos(x, y , z);
                                 BlockState targetBlockState = world.getBlockState(targetBlockPos);
                                 Block targetBlock = targetBlockState.getBlock();
 
                                 if (!targetBlock.equals(Blocks.AIR) && !targetBlock.equals(Blocks.BEDROCK)) {
-                                    Arrays.stream(config.getStripProfile1().toArray()).filter(Registry.BLOCK.getId(targetBlock).toString() :: equals).forEachOrdered(s -> {
+                                    Arrays.stream(Profile.profileMapper.get(profile)).filter(Registry.BLOCK.getId(targetBlock).toString() :: equals).forEachOrdered(s -> {
                                         WorldStripper.hashedBlockCache.put(targetBlockPos, targetBlockState);
                                         world.setBlockState(targetBlockPos, Registry.BLOCK.get(new Identifier(config.getReplacementBlock())).getDefaultState(), config.getBlockStateFlag());
                                     });

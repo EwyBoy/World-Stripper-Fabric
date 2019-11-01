@@ -3,10 +3,10 @@ package com.ewyboy.worldstripper.config;
 import com.ewyboy.worldstripper.other.Reference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import me.sargunvohra.mcmods.autoconfig1.ConfigData;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
@@ -17,10 +17,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@me.sargunvohra.mcmods.autoconfig1.annotation.Config(name = Reference.ModInfo.MOD_NAME)
-public class Config implements ConfigData {
+public class Config {
 
-    private int blockStateFlag = 3;
+    private static int blockStateFlag = 3;
     private int chunkRadiusX = 3;
     private int chunkRadiusZ = 3;
     private String replacementBlock = "minecraft:air";
@@ -89,11 +88,12 @@ public class Config implements ConfigData {
                 general.addEntry(entryBuilder.startStrList("profile_4", Lists.newArrayList(config.stripProfile4)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build());
                 general.addEntry(entryBuilder.startStrList("profile_5", Lists.newArrayList(config.stripProfile5)).setCellErrorSupplier(value -> Optional.ofNullable(!Identifier.isValid(value) ? I18n.translate("config.worldstripper.error.invalid_identifier", value) : null)).setDefaultValue(Lists.newArrayList(defaultProfile)).setExpended(true).setSaveConsumer(strings -> config.stripProfile1 = strings.stream().filter(Identifier::isValid).map(Identifier::new).map(Identifier::toString).collect(Collectors.toSet())).build());
         builder.setSavingRunnable(ConfigHandler :: save);
+        MinecraftClient.getInstance().openScreen(builder.build());
         return builder.build();
     }
 
 
-    public int getBlockStateFlag() {
+    public static int getBlockStateFlag() {
         return blockStateFlag;
     }
 

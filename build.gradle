@@ -10,10 +10,10 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-minecraft {
-}
+minecraft {}
 
 repositories {
+	jcenter()
 	maven { url 'https://maven.fabricmc.net' }
 	maven { url "https://minecraft.curseforge.com/api/maven"}
 	maven { url = 'http://maven.sargunv.s3-website-us-west-2.amazonaws.com/' }
@@ -30,11 +30,9 @@ dependencies {
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modCompile "crochet:Crochet:${project.crochet_version}"
 	modCompile "io.github.prospector:modmenu:${project.modmenu_version}"
-	modCompile "me.sargunvohra.mcmods:auto-config:${project.auto_config_version}"
-
 
 	// Nested Jars
-	include "net.fabricmc:fabric:${project.fabric_version}"
+	include "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	include "crochet:Crochet:${project.crochet_version}"
 	include "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
 

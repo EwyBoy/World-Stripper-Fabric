@@ -1,5 +1,4 @@
 {
-  "block_state_flag": 3,
   "chunk_radius_x": 3,
   "chunk_radius_z": 3,
   "replacement_block": "minecraft:air",

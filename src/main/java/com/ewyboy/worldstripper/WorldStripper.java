@@ -1,8 +1,8 @@
 package com.ewyboy.worldstripper;
 
 import com.ewyboy.worldstripper.config.ConfigHandler;
-import com.ewyboy.worldstripper.network.PacketDressWorld;
-import com.ewyboy.worldstripper.network.PacketStripWorld;
+import com.ewyboy.worldstripper.network.packets.PacketDressWorld;
+import com.ewyboy.worldstripper.network.packets.PacketStripWorld;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.block.BlockState;
